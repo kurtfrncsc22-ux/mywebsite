@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 50%, #f67280 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(45deg);
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+        }
+
+        .page {
+            display: none;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 60px 50px;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            color: #e63946;
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .intro-text {
+            color: #333;
+            font-size: 1.6em;
+            line-height: 1.6;
+            margin: 40px 0;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .love-text {
+            color: #333;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin: 30px 0;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .love-text p {
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: #e63946;
+            font-weight: 400;
+            font-size: 1.05em;
+        }
+
+        .next-btn {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 16px 50px;
+            font-size: 1.1em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 300;
+            box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+            margin-top: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(230, 57, 70, 0.4);
+            background: #d62839;
+        }
+
+        .question-text {
+            color: #333;
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin: 40px 0;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .big-question {
+            color: #e63946;
+            font-size: 2.2em;
+            font-weight: 300;
+            margin: 40px 0;
+            text-shadow: 3px 3px 6px rgba(230, 57, 70, 0.2);
+            letter-spacing: -0.5px;
+        }
+
+        .challenge {
+            background: rgba(255, 192, 203, 0.3);
+            padding: 25px;
+            border-radius: 4px;
+            margin: 30px 0;
+            border-left: 4px solid #e63946;
+        }
+
+        .challenge p {
+            color: #333;
+            font-weight: 400;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .challenge small {
+            color: #555;
+            display: block;
+            font-style: normal;
+            font-size: 0.95em;
+            margin: 5px 0;
+            font-weight: 300;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+            justify-content: center;
+            margin: 30px auto;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border: 2px solid #e63946;
+            border-radius: 4px;
+            font-size: 2.5em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-weight: 300;
+        }
+
+        .cell:hover:not(.taken) {
+            background: #fef5f6;
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(230, 57, 70, 0.15);
+        }
+
+        .cell.taken {
+            cursor: not-allowed;
+        }
+
+        .cell.x {
+            color: #e63946;
+            text-shadow: 3px 3px 6px rgba(230, 57, 70, 0.25);
+        }
+
+        .cell.o {
+            color: #ff69b4;
+            text-shadow: 3px 3px 6px rgba(255, 105, 180, 0.25);
+        }
+
+        .status {
+            font-size: 1.2em;
+            color: #e63946;
+            margin: 20px 0;
+            font-weight: 300;
+            min-height: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .reset-btn {
+            background: white;
+            color: #e63946;
+            border: 2px solid #e63946;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 300;
+            margin-top: 10px;
+        }
+
+        .reset-btn:hover {
+            background: #e63946;
+            color: white;
+        }
+
+        .score {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+
+        .score-item {
+            padding: 12px 20px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .score-label {
+            color: #666;
+            font-size: 0.85em;
+            font-weight: 300;
+        }
+
+        .score-value {
+            color: #e63946;
+            font-weight: 300;
+            font-size: 1.4em;
+        }
+
+        .result-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-modal.active {
+            display: flex;
+        }
+
+        .result-content {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            animation: popIn 0.5s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .result-content h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 300;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-content p {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .yes-answer {
+            color: #28a745;
+            text-shadow: 3px 3px 6px rgba(40, 167, 69, 0.2);
+        }
+
+        .no-answer {
+            color: #e63946;
+            text-shadow: 3px 3px 6px rgba(230, 57, 70, 0.2);
+        }
+
+        .continue-btn {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 1.1em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .continue-btn:hover {
+            background: #d62839;
+        }
+
+        .emoji-large {
+            font-size: 4em;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <script>
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 6 + 's';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(heart);
+        }
+    </script>
+
+    <!-- Page 1: Introduction -->
+    <div class="page active" id="page1">
+        <h1>hey burrattaa hannah banana...</h1>
+        <div class="intro-text">
+            may sasabihin me sayo..
+        </div>
+        <button class="next-btn" onclick="nextPage(2)">Continue</button>
+    </div>
+
+    <!-- Page 2: Love Declaration -->
+    <div class="page" id="page2">
+        <h1>Dear teacheraka..</h1>
+        <div class="love-text">
+            <p>I love you <span class="highlight">forever and always</span>.</p>
+            <p>You mean the <span class="highlight">world</span> to me.</p>
+            <p>Every moment with you is a treasure, every smile you give me lights up my day, and every laugh we share makes my heart skip a beat.</p>
+            <p>You're not just my love, you're my besto friendo!!, my partner in crime (huie??), and the reason I believe in <span class="highlight">forever HEHEHEHEH</span>.</p>
+        </div>
+        <button class="next-btn" onclick="nextPage(3)">Continue</button>
+    </div>
+
+    <!-- Page 3: Building Up to Question -->
+    <div class="page" id="page3">
+        <h1>So...</h1>
+        <div class="question-text">
+            <p>I'm going to ask you a very important question...</p>
+            <p>pero,, let's play a game!!</p>
+        </div>
+        <button class="next-btn" onclick="nextPage(4)">I'm Ready</button>
+    </div>
+
+    <!-- Page 4: The Question + Game -->
+    <div class="page" id="page4">
+        <h1>The Big Question!!</h1>
+        <div class="big-question">
+            Will You Be My Valentine?
+        </div>
+
+        <div class="challenge">
+            <p>The mega ultra twist</p>
+            <small>If you win at Tic Tac Toe, you can say NO</small>
+            <small>If I win or we tie, the answer is YES, ez challenge</small>
+            <small>Hint: Di ka mananalo</small>
+        </div>
+
+        <div class="score">
+            <div class="score-item">
+                <div class="score-label">Babycakes (X)</div>
+                <div class="score-value" id="player-score">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Ties</div>
+                <div class="score-value" id="tie-score">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">budidoy (O)</div>
+                <div class="score-value" id="computer-score">0</div>
+            </div>
+        </div>
+
+        <div class="status" id="status">Ikaw po una teacheraka</div>
+
+        <div class="game-board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <button class="reset-btn" onclick="resetGame()">New Game</button>
+    </div>
+
+    <div class="result-modal" id="result-modal">
+        <div class="result-content">
+            <h2 id="result-emoji"></h2>
+            <p id="result-message">hahahaha eh ano ang sagot pakisabe?</p>
+            <h2 id="result-answer">YES</h2>
+            <button class="continue-btn" onclick="closeModal()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPageNum = 1;
+
+        function nextPage(pageNum) {
+            document.getElementById('page' + currentPageNum).classList.remove('active');
+            document.getElementById('page' + pageNum).classList.add('active');
+            currentPageNum = pageNum;
+        }
+
+        // Game Logic
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let playerScore = 0;
+        let computerScore = 0;
+        let tieScore = 0;
+
+        const winningConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6]              // Diagonals
+        ];
+
+        const cells = document.querySelectorAll('.cell');
+        const statusDisplay = document.getElementById('status');
+        const resultModal = document.getElementById('result-modal');
+        const resultEmoji = document.getElementById('result-emoji');
+        const resultMessage = document.getElementById('result-message');
+        const resultAnswer = document.getElementById('result-answer');
+
+        cells.forEach(cell => {
+            cell.addEventListener('click', handleCellClick);
+        });
+
+        function handleCellClick(e) {
+            const clickedCell = e.target;
+            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+            if (board[clickedCellIndex] !== '' || !gameActive || currentPlayer !== 'X') {
+                return;
+            }
+
+            updateCell(clickedCell, clickedCellIndex, 'X');
+            checkResult();
+
+            if (gameActive) {
+                currentPlayer = 'O';
+                statusDisplay.textContent = 'My turn...';
+                setTimeout(computerMove, 500);
+            }
+        }
+
+        function updateCell(cell, index, player) {
+            board[index] = player;
+            cell.textContent = player;
+            cell.classList.add('taken', player.toLowerCase());
+        }
+
+        function computerMove() {
+            if (!gameActive) return;
+
+            // Minimax algorithm - makes the computer unbeatable
+            const bestMove = getBestMove();
+            const cell = cells[bestMove];
+            
+            updateCell(cell, bestMove, 'O');
+            checkResult();
+
+            if (gameActive) {
+                currentPlayer = 'X';
+                statusDisplay.textContent = 'Ikaw po ulit teacheraka!';
+            }
+        }
+
+        // Minimax algorithm implementation
+        function minimax(newBoard, player) {
+            const availSpots = newBoard.reduce((acc, val, idx) => {
+                if (val === '') acc.push(idx);
+                return acc;
+            }, []);
+
+            if (checkWin(newBoard, 'X')) {
+                return { score: -10 };
+            } else if (checkWin(newBoard, 'O')) {
+                return { score: 10 };
+            } else if (availSpots.length === 0) {
+                return { score: 0 };
+            }
+
+            const moves = [];
+
+            for (let i = 0; i < availSpots.length; i++) {
+                const move = {};
+                move.index = availSpots[i];
+                newBoard[availSpots[i]] = player;
+
+                if (player === 'O') {
+                    const result = minimax(newBoard, 'X');
+                    move.score = result.score;
+                } else {
+                    const result = minimax(newBoard, 'O');
+                    move.score = result.score;
+                }
+
+                newBoard[availSpots[i]] = '';
+                moves.push(move);
+            }
+
+            let bestMove;
+            if (player === 'O') {
+                let bestScore = -10000;
+                for (let i = 0; i < moves.length; i++) {
+                    if (moves[i].score > bestScore) {
+                        bestScore = moves[i].score;
+                        bestMove = i;
+                    }
+                }
+            } else {
+                let bestScore = 10000;
+                for (let i = 0; i < moves.length; i++) {
+                    if (moves[i].score < bestScore) {
+                        bestScore = moves[i].score;
+                        bestMove = i;
+                    }
+                }
+            }
+
+            return moves[bestMove];
+        }
+
+        function getBestMove() {
+            return minimax(board, 'O').index;
+        }
+
+        function checkWin(currentBoard, player) {
+            return winningConditions.some(condition => {
+                return condition.every(index => {
+                    return currentBoard[index] === player;
+                });
+            });
+        }
+
+        function checkResult() {
+            let roundWon = false;
+            let winner = '';
+
+            for (let i = 0; i < winningConditions.length; i++) {
+                const [a, b, c] = winningConditions[i];
+                if (board[a] === '' || board[b] === '' || board[c] === '') {
+                    continue;
+                }
+                if (board[a] === board[b] && board[b] === board[c]) {
+                    roundWon = true;
+                    winner = board[a];
+                    break;
+                }
+            }
+
+            if (roundWon) {
+                gameActive = false;
+                if (winner === 'X') {
+                    statusDisplay.textContent = 'You won this round!';
+                    playerScore++;
+                    document.getElementById('player-score').textContent = playerScore;
+                    showResult(false); // Player wins = NO
+                } else {
+                    statusDisplay.textContent = 'I won this round!';
+                    computerScore++;
+                    document.getElementById('computer-score').textContent = computerScore;
+                    showResult(true); // Computer wins = YES
+                }
+                return;
+            }
+
+            if (!board.includes('')) {
+                gameActive = false;
+                statusDisplay.textContent = 'It\'s a tie!';
+                tieScore++;
+                document.getElementById('tie-score').textContent = tieScore;
+                showResult(true); // Tie = YES
+                return;
+            }
+        }
+
+        function showResult(isYes) {
+            setTimeout(() => {
+                if (isYes) {
+                    resultEmoji.textContent = '';
+                    resultMessage.textContent = 'That means...';
+                    resultAnswer.textContent = 'YES';
+                    resultAnswer.className = 'yes-answer';
+                } else {
+                    resultEmoji.textContent = '';
+                    resultMessage.textContent = 'Wow, you actually won! That means...';
+                    resultAnswer.textContent = 'NO';
+                    resultAnswer.className = 'no-answer';
+                }
+                resultModal.classList.add('active');
+            }, 1000);
+        }
+
+        function closeModal() {
+            resultModal.classList.remove('active');
+            resetGame();
+        }
+
+        function resetGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            currentPlayer = 'X';
+            statusDisplay.textContent = 'Your turn! Click any square';
+            
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('taken', 'x', 'o');
+            });
+        }
+    </script>
+</body>
+</html>  
